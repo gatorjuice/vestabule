@@ -5,6 +5,7 @@ require 'json'
 require_relative 'char_map'
 
 module Vestabule
+  # A board's configuration of characters
   class Layout
     include CharMap
 

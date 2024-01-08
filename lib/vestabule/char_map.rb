@@ -73,8 +73,8 @@ module Vestabule
       68 => "\e[45m \e[0m",              # Magenta Background
       69 => "\e[47m \e[0m",              # White Background
 
-      70 => "\e[40m  \e[0m",             # Black Background
-      71 => :filled
+      70 => "\e[40m \e[0m",              # Black Background
+      71 => ' '                          # Filled Background (black on white board, white on black)
     }.freeze
   end
 end

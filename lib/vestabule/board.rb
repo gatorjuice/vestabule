@@ -5,30 +5,20 @@ require 'forwardable'
 module Vestabule
   # Main class to be used
   class Board
-    extend Forwardable
-
-    attr_reader :read_write_key, :layout
-
-    def_delegators :@layout, :to_text
+    attr_reader :read_write_key
 
     # read_write_key: X-Vestaboard-Read-Write-Key
     def initialize(read_write_key = fetch_read_write_key)
       @read_write_key = read_write_key
     end
 
-    def read(preview: true)
-      response = Vestabule::Api.read_board(read_write_key)
-
-      @layout = Vestabule::Layout.new(response.dig('currentMessage', 'layout'))
-
-      text = to_text
-
-      puts text if preview
-
-      text
+    def read(preview: false)
+      Vestabule::Api.read_board(read_write_key, preview: preview)
     end
 
-    def write; end
+    def write(text)
+      Vestabule::Api.write_board(read_write_key, text)
+    end
 
     private
 

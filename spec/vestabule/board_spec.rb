@@ -28,7 +28,7 @@ RSpec.describe Vestabule::Board do
       it 'raises an error' do
         expect { described_class.new }.to raise_error(
           Vestabule::ApiKeyError,
-          "Must be initialized with an API Read Write Key or have 'VESTABULE_READ_WRITE_KEY' set in the environment."
+          "Must be initialized with an API Read Write Key or have 'VESTABULE_READ_WRITE_KEY' set in the environment. "
         )
       end
     end
