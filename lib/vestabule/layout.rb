@@ -18,13 +18,16 @@ module Vestabule
     end
 
     def print_preview
-      puts(
+      preview =
         rows.map do |row|
           row.map do |char_code|
             CharMap::CHARS[char_code]
           end.join
         end.join("\n")
-      )
+
+      puts(preview)
+
+      preview
     end
 
     def parse_layout(layout)
