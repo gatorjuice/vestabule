@@ -9,13 +9,16 @@ module Vestabule
   class Api
     VESTABOARD_API_URL = 'https://rw.vestaboard.com'
 
-    def self.read_board(key, preview: false)
-      uri = URI(VESTABOARD_API_URL)
-      response = Net::HTTP.get_response(uri, headers(key))
+    def self.read_board(key)
+      handle_response(Net::HTTP.get_response(uri, headers(key)))
+    end
 
-      raise ReadError, response.inspect unless response.is_a?(Net::HTTPSuccess)
+    def self.write_board(key, text)
+      handle_response(Net::HTTP.post(uri, { text: text }.to_json, headers(key)))
+    end
 
-      handle_response(response, preview)
+    private_class_method def self.uri
+      URI(VESTABOARD_API_URL)
     end
 
     private_class_method def self.headers(key)
@@ -25,13 +28,10 @@ module Vestabule
       }
     end
 
-    private_class_method def self.handle_response(response, preview)
-      layout_string = JSON.parse(response.body).dig('currentMessage', 'layout')
-      layout = Vestabule::Layout.new(layout_string)
+    private_class_method def self.handle_response(response)
+      raise ReadError, response.inspect unless response.is_a?(Net::HTTPSuccess)
 
-      puts layout.to_text if preview
-
-      layout
+      JSON.parse(response.body)
     end
   end
 end

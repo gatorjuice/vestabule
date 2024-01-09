@@ -5,7 +5,9 @@ require 'forwardable'
 module Vestabule
   # Main class to be used
   class Board
-    attr_reader :read_write_key
+    LAYOUT_PATH = %w[currentMessage layout].freeze
+
+    attr_reader :read_write_key, :layout, :message_id
 
     # read_write_key: X-Vestaboard-Read-Write-Key
     def initialize(read_write_key = fetch_read_write_key)
@@ -13,7 +15,10 @@ module Vestabule
     end
 
     def read(preview: false)
-      Vestabule::Api.read_board(read_write_key, preview: preview)
+      parsed_response = Vestabule::Api.read_board(read_write_key)
+      layout = Vestabule::Layout.new(parsed_response.dig(*LAYOUT_PATH))
+      layout.print_preview if preview
+      layout
     end
 
     def write(text)
