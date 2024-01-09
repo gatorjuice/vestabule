@@ -11,16 +11,41 @@ module Vestabule
 
     attr_reader :rows
 
-    def initialize(layout_string)
-      @rows = JSON.parse(layout_string)
+    def initialize(layout)
+      @rows = parse_layout(layout)
+
+      validate_rows!
     end
 
-    def to_text
-      rows.map do |row|
-        row.map do |char_code|
-          CharMap::CHARS[char_code]
-        end.join
-      end.join("\n")
+    def print_preview
+      preview =
+        rows.map do |row|
+          row.map do |char_code|
+            CharMap::CHARS[char_code]
+          end.join
+        end.join("\n")
+
+      puts(preview)
+
+      preview
+    end
+
+    def parse_layout(layout)
+      if layout.is_a?(String)
+        JSON.parse(layout)
+      elsif layout.is_a?(Array)
+        layout
+      else
+        raise LayoutError, 'Unrecognized layout format'
+      end
+    end
+
+    private
+
+    def validate_rows!
+      return if rows.size == 6 && rows.all? { |row| row.size == 22 }
+
+      raise LayoutError
     end
   end
 end

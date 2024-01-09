@@ -7,5 +7,6 @@ require_relative 'vestabule/layout'
 
 module Vestabule
   class ReadError < StandardError; end
+  class LayoutError < ArgumentError; end
   class ApiKeyError < ArgumentError; end
 end

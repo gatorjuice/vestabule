@@ -50,7 +50,7 @@ RSpec.describe Vestabule::Layout do
     end
 
     it 'prints the layout as readable text' do
-      expect(layout.to_text).to eq(
+      expect(layout.print_preview).to eq(
         "                      \n                      \n     " \
         "HELLO WORLD      \n                      \n                      " \
         "\n                      "
